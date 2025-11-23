@@ -42,45 +42,45 @@
     {
       "group": "Get Started",
       "pages": [
-        "mint/introduction",
-        "mint/quickstart",
-        "mint/architecture-overview"
+        "introduction",
+        "quickstart",
+        "architecture-overview"
       ]
     },
     {
       "group": "Core Components",
       "pages": [
-        "mint/components/viewmodels",
-        "mint/components/services",
-        "mint/components/models",
-        "mint/components/views",
-        "mint/components/utils"
+        "components/viewmodels",
+        "components/services",
+        "components/models",
+        "components/views",
+        "components/utils"
       ]
     },
     {
       "group": "Guides",
       "pages": [
-        "mint/guides/development",
-        "mint/guides/configuration",
-        "mint/guides/testing",
-        "mint/guides/debugging"
+        "guides/development",
+        "guides/configuration",
+        "guides/testing",
+        "guides/debugging"
       ]
     },
     {
       "group": "API Reference",
       "pages": [
-        "mint/api-reference/serialscanner-viewmodel",
-        "mint/api-reference/camera-manager",
-        "mint/api-reference/ocr-processors",
-        "mint/api-reference/metrics-service"
+        "api-reference/serialscanner-viewmodel",
+        "api-reference/camera-manager",
+        "api-reference/ocr-processors",
+        "api-reference/metrics-service"
       ]
     },
     {
       "group": "Architecture",
       "pages": [
-        "mint/architecture/system-overview",
-        "mint/architecture/data-flow",
-        "mint/architecture/design-patterns"
+        "architecture/system-overview",
+        "architecture/data-flow",
+        "architecture/design-patterns"
       ]
     }
   ],
