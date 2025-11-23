@@ -1,0 +1,48 @@
+---
+title: Introduction
+description: AppleSerialScanner - Real-time serial number detection for iOS
+---
+
+# Introduction
+
+AppleSerialScanner is an iOS application for real-time serial number detection using computer vision and OCR technology. The app uses Apple's VisionKit and Vision frameworks to detect and extract Apple device serial numbers from camera frames.
+
+## Key Features
+
+- **Real-time OCR**: Live serial number detection from camera feed
+- **Dual Processing Paths**: AVCapture + VisionKit support
+- **Smart ROI Detection**: Automatic region of interest detection
+- **Stability Tracking**: Multi-frame validation for accuracy
+- **Analytics & Telemetry**: Comprehensive metrics collection
+- **Accessibility**: Full VoiceOver and accessibility support
+- **Batch Processing**: Support for multiple serial scans
+
+## Technology Stack
+
+- **Language**: Swift 5.9+
+- **UI Framework**: SwiftUI
+- **Camera**: AVFoundation, VisionKit
+- **OCR**: Vision Framework (VNRecognizeTextRequest)
+- **ML**: Core ML (optional)
+- **Networking**: URLSession
+- **Architecture**: MVVM pattern
+
+## Requirements
+
+- iOS 17.0+
+- Xcode 16.0+
+- Swift 5.9+
+- Camera permissions
+
+## Project Structure
+
+```
+AppleSerialScanner/
+├── Models/              # Data models
+├── Services/            # Business logic services
+├── Utils/               # Utility classes
+├── ViewModels/          # ViewModels
+├── Views/               # SwiftUI views
+├── Tests/               # Test files
+└── Configuration/       # Configuration files
+```

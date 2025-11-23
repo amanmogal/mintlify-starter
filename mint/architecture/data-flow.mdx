@@ -1,0 +1,90 @@
+---
+title: Data Flow
+description: Data flow patterns and frame processing
+---
+
+# Data Flow
+
+## Frame Capture → OCR → Detection Flow
+
+### AVCapture Path
+
+```
+1. CameraManager.startSession()
+   ↓
+2. AVCaptureSession captures frames (~30 FPS)
+   ↓
+3. CameraManager.captureOutput(_:didOutput:from:)
+   ↓
+4. Extract CVPixelBuffer from CMSampleBuffer
+   ↓
+5. CameraManager.frameDelegate?.didCaptureFrame()
+   ↓
+6. SerialScannerViewModel.didCaptureFrame()
+   ↓
+7. Check: isOCREnabled && lastVisionROI != .zero
+   ↓
+8. Crop frame to ROI
+   ↓
+9. LiveSerialOCRProcessor.processFrame()
+   ↓
+10. Vision OCR processes frame
+   ↓
+11. Extract text candidates
+   ↓
+12. Validate Apple serial pattern
+   ↓
+13. onTextDetected?(text, confidence) callback
+   ↓
+14. SerialScannerViewModel.didDetectText()
+   ↓
+15. handleDetectedSerial(source: .liveOCR)
+   ↓
+16. Validation → Stability tracking → Auto-capture
+   ↓
+17. UI Update → Backend submission
+```
+
+### VisionKit Path
+
+```
+1. VisionKitLiveScannerView appears
+   ↓
+2. DataScannerViewController.startScanning()
+   ↓
+3. VisionKit OCR processes frames
+   ↓
+4. Coordinator.dataScanner(didUpdate:)
+   ↓
+5. Pattern validation
+   ↓
+6. Temporal consistency check (3 frames)
+   ↓
+7. receiveVisionKitCandidate()
+   ↓
+8. handleDetectedSerial(source: .visionKit)
+   ↓
+9. Validation → Stability → UI Update
+```
+
+## Stability Tracking Flow
+
+```
+Detection Received
+  ↓
+handleDetectedSerial()
+  ↓
+Validation Check
+  ↓ (valid)
+Stability Tracking
+  ↓
+consecutiveConfirmations++
+  ↓
+Check: consecutiveConfirmations >= requiredConfirmations
+  ↓ (yes)
+Auto-capture Triggered
+  ↓
+Backend Submission
+  ↓
+UI Update (Success)
+```

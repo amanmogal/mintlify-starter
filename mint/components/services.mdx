@@ -1,0 +1,120 @@
+---
+title: Services
+description: Service layer components
+---
+
+# Services
+
+## Camera Services
+
+### CameraManager
+
+**File**: `Utils/CameraManager.swift`
+
+Manages AVCaptureSession and frame delivery.
+
+<CardGroup cols={2}>
+  <Card title="Properties" icon="list">
+    - `session: AVCaptureSession`
+    - `isSessionRunning: Bool`
+    - `zoomFactor: CGFloat`
+    - `frameDelegate: CameraFrameDelegate?`
+  </Card>
+  <Card title="Methods" icon="code">
+    - `startSession()`
+    - `stopSession()`
+    - `setZoomFactor(_:animated:)`
+    - `getPreviewLayer()`
+  </Card>
+</CardGroup>
+
+### CameraOptimizer
+
+**File**: `Services/CameraOptimizer.swift`
+
+Optimizes camera for close-range scanning.
+
+**Key Methods**:
+- `optimizeForCloseRange()`: Configure for close-range
+- `detectMacroMode()`: Detect macro mode capability
+- `setFocusDistance(_:)`: Set focus distance
+
+## OCR Services
+
+### LiveSerialOCRProcessor
+
+**File**: `Services/LiveSerialOCRProcessor.swift`
+
+Real-time OCR processing using Vision framework.
+
+<CardGroup cols={2}>
+  <Card title="Configuration" icon="settings">
+    - Recognition level: `.accurate`
+    - Throttle: ~12.5 fps (0.08s interval)
+    - Custom words: Apple serial prefixes
+    - Minimum text height: 0.02
+  </Card>
+  <Card title="Callbacks" icon="arrow-right">
+    - `onTextDetected: ((String, Float) -> Void)?`
+    - `onMetrics: ((...) -> Void)?`
+  </Card>
+</CardGroup>
+
+**Key Methods**:
+- `processFrame(_:)`: Process camera frame
+- `setRegionOfInterest(_:)`: Set ROI
+- `setOrientation(_:)`: Set image orientation
+- `setNeedsPreprocess(_:)`: Enable preprocessing
+
+### V2EnhancedOCRProcessor
+
+**File**: `Services/V2EnhancedOCRProcessor.swift`
+
+Enhanced OCR with quality scoring.
+
+### AdvancedOCRProcessor
+
+**File**: `Services/AdvancedOCRProcessor.swift`
+
+Accurate confirmation OCR for high-confidence validation.
+
+## Analytics & Telemetry
+
+### UnifiedMetricsService
+
+**File**: `Services/UnifiedMetricsService.swift`
+
+Metrics collection and backend integration.
+
+**Endpoints**:
+- `POST /api/logs/ios`: Main telemetry
+- `POST /api/shadow/scan`: Shadow mode
+- `POST /api/telemetry/submit`: Device telemetry
+- `GET /api/telemetry/performance`: Performance metrics
+- `GET /api/analytics/failure-summary`: Failure analytics
+- `GET /api/isolated/status`: Pipeline status
+- `GET /metrics`: Prometheus metrics
+
+## Validation & Processing
+
+### SerialValidator
+
+**File**: `Services/SerialValidator.swift`
+
+Serial number validation.
+
+**Key Methods**:
+- `validate(_:)`: Validate serial number
+- `isValidSerialText(_:)`: Check if text is valid serial
+- `isValidAppleSerialPattern(_:)`: Pattern validation
+
+### StabilityTracker
+
+**File**: `Services/StabilityTracker.swift`
+
+Multi-frame stability tracking.
+
+**Key Methods**:
+- `trackCandidate(_:)`: Track candidate
+- `isStable()`: Check if stable
+- `reset()`: Reset tracking

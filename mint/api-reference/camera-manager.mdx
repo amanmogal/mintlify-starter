@@ -1,0 +1,59 @@
+---
+title: CameraManager
+description: API reference for CameraManager
+---
+
+# CameraManager
+
+Manages AVCaptureSession and frame delivery.
+
+## Properties
+
+<ParamField path="session" type="AVCaptureSession">
+  AVCaptureSession instance for camera capture.
+</ParamField>
+
+<ParamField path="isSessionRunning" type="Bool">
+  Published property indicating if session is running.
+</ParamField>
+
+<ParamField path="zoomFactor" type="CGFloat">
+  Current zoom factor (1.0 = no zoom).
+</ParamField>
+
+<ParamField path="frameDelegate" type="CameraFrameDelegate?">
+  Weak delegate for frame delivery.
+</ParamField>
+
+## Methods
+
+<Method name="startSession" returns="Void">
+  Start camera session. Requests camera permissions if needed.
+</Method>
+
+<Method name="stopSession" returns="Void">
+  Stop camera session.
+</Method>
+
+<Method name="setZoomFactor" param="factor: CGFloat, animated: Bool" returns="Void">
+  Set zoom factor with optional animation.
+</Method>
+
+<Method name="getPreviewLayer" returns="AVCaptureVideoPreviewLayer?">
+  Get preview layer for UI display.
+</Method>
+
+## Protocol
+
+### CameraFrameDelegate
+
+```swift
+protocol CameraFrameDelegate: AnyObject {
+    @MainActor func didCaptureFrame(
+        pixelBuffer: CVPixelBuffer, 
+        cameraMetadata: [String: Any]
+    )
+}
+```
+
+Delegate protocol for receiving camera frames.

@@ -1,0 +1,63 @@
+---
+title: OCR Processors
+description: API reference for OCR processing components
+---
+
+# OCR Processors
+
+## LiveSerialOCRProcessor
+
+**File**: `Services/LiveSerialOCRProcessor.swift`
+
+Real-time OCR processing using Vision framework.
+
+### Properties
+
+<ParamField path="onTextDetected" type="((String, Float) -> Void)?">
+  Callback invoked when text is detected. Parameters: (text, confidence).
+</ParamField>
+
+<ParamField path="onMetrics" type="((CFAbsoluteTime, CFAbsoluteTime, [VNRecognizedTextObservation], VNRecognizeTextRequest, CVPixelBuffer?) -> Void)?">
+  Metrics callback for performance tracking.
+</ParamField>
+
+### Methods
+
+<Method name="processFrame" param="pixelBuffer: CVPixelBuffer" returns="Void">
+  Process a camera frame for OCR. Throttled to ~12.5 fps.
+</Method>
+
+<Method name="setRegionOfInterest" param="roi: CGRect" returns="Void">
+  Set ROI for OCR processing. Coordinates are normalized [0,1] with origin at bottom-left.
+</Method>
+
+<Method name="setOrientation" param="orientation: CGImagePropertyOrientation" returns="Void">
+  Set image orientation for OCR processing.
+</Method>
+
+<Method name="setNeedsPreprocess" param="enabled: Bool" returns="Void">
+  Enable or disable image preprocessing (grayscale, contrast, exposure, sharpen).
+</Method>
+
+<Method name="setROIScaleFactor" param="factor: CGFloat" returns="Void">
+  Set ROI scale factor for preprocessing (0.5 to 1.0).
+</Method>
+
+### Configuration
+
+- **Recognition Level**: `.accurate`
+- **Throttle Interval**: 0.08 seconds (~12.5 fps)
+- **Custom Words**: Apple serial prefixes
+- **Minimum Text Height**: 0.02
+
+## V2EnhancedOCRProcessor
+
+**File**: `Services/V2EnhancedOCRProcessor.swift`
+
+Enhanced OCR with quality scoring.
+
+## AdvancedOCRProcessor
+
+**File**: `Services/AdvancedOCRProcessor.swift`
+
+Accurate confirmation OCR for high-confidence validation.

@@ -1,0 +1,91 @@
+---
+title: Debugging
+description: Debugging guide and troubleshooting
+---
+
+# Debugging
+
+## Logging
+
+### Logger Categories
+
+- `com.appleserialscanner.CameraManager`
+- `com.appleserialscanner.LiveOCR`
+- `com.appleserialscanner.ViewModel`
+- `com.appleserialscanner.visionkit`
+
+### Usage
+
+```swift
+let logger = Logger(
+    subsystem: "com.appleserialscanner", 
+    category: "MyComponent"
+)
+logger.info("Message")
+logger.error("Error: \(error)")
+logger.debug("Debug info")
+```
+
+## Key Log Points
+
+### Frame Capture
+- `CameraManager.captureOutput`: Frame captured
+- `SerialScannerViewModel.didCaptureFrame`: Frame received
+
+### OCR Processing
+- `LiveSerialOCRProcessor.processFrame`: Processing frame
+- `onTextDetected`: Text detected
+
+### Detection
+- `SerialScannerViewModel.didDetectText`: Text received
+- `handleDetectedSerial`: Processing detection
+
+## Common Issues
+
+### No Serial Detected
+
+**Check**:
+1. Camera permissions granted
+2. `isOCREnabled = true`
+3. `lastVisionROI != .zero`
+4. Frames being captured (check logs)
+5. OCR processing (check logs)
+6. Pattern validation passing
+
+**Debug**:
+- Check logs for frame capture
+- Verify OCR processing
+- Check validation logic
+
+### Camera Not Starting
+
+**Check**:
+1. Camera permissions
+2. `startSession()` called
+3. Session running
+4. No other app using camera
+
+**Debug**:
+- Check authorization status
+- Verify session configuration
+- Check device availability
+
+### VisionKit Delegate Not Called
+
+**Check**:
+1. Coordinator retention (strong reference)
+2. Delegate set correctly
+3. VisionKit scanning started
+4. Text in frame and within ROI
+
+**Debug**:
+- Verify delegate assignment
+- Check coordinator lifecycle
+- Verify VisionKit configuration
+
+## Debug Tools
+
+- **Xcode Debugger**: Breakpoints, variable inspection
+- **Instruments**: Performance profiling
+- **Console Logs**: Real-time logging
+- **Network Debugging**: Charles Proxy, Proxyman

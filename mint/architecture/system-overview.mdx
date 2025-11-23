@@ -1,0 +1,60 @@
+---
+title: System Overview
+description: High-level system architecture
+---
+
+# System Overview
+
+## Architecture Pattern
+
+AppleSerialScanner follows **MVVM (Model-View-ViewModel)** architecture:
+
+```
+┌─────────────────────────────────────────┐
+│         Presentation Layer              │
+│         (SwiftUI Views)                 │
+└─────────────────┬─────────────────────┘
+                  │ @Published
+                  ▼
+┌─────────────────────────────────────────┐
+│         ViewModel Layer                  │
+│    SerialScannerViewModel                │
+└─────┬──────────┬──────────┬─────────────┘
+      │          │          │
+      ▼          ▼          ▼
+┌──────────┐ ┌──────────┐ ┌──────────┐
+│ Camera   │ │   OCR    │ │ Services │
+│ Manager  │ │Processor │ │          │
+└──────────┘ └──────────┘ └──────────┘
+```
+
+## Component Layers
+
+### Presentation Layer
+SwiftUI views for user interface rendering.
+
+### ViewModel Layer
+`SerialScannerViewModel` orchestrates all components and manages state.
+
+### Service Layer
+Business logic services for camera, OCR, analytics, validation.
+
+### Utility Layer
+Helper classes for validation, configuration, platform detection.
+
+## Key Components
+
+<CardGroup cols={2}>
+  <Card title="SerialScannerViewModel" icon="code">
+    Main orchestrator for scanning functionality
+  </Card>
+  <Card title="CameraManager" icon="camera">
+    AVCaptureSession management and frame delivery
+  </Card>
+  <Card title="LiveSerialOCRProcessor" icon="eye">
+    Real-time OCR processing using Vision framework
+  </Card>
+  <Card title="UnifiedMetricsService" icon="chart-line">
+    Metrics collection and backend integration
+  </Card>
+</CardGroup>

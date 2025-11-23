@@ -1,0 +1,108 @@
+---
+title: Architecture Overview
+description: High-level system architecture and design patterns
+---
+
+# Architecture Overview
+
+## System Architecture
+
+AppleSerialScanner follows a **MVVM (Model-View-ViewModel)** architecture pattern with clear separation of concerns.
+
+<CardGroup cols={2}>
+  <Card title="Presentation Layer" icon="layout">
+    SwiftUI views for UI rendering
+  </Card>
+  <Card title="ViewModel Layer" icon="code">
+    Business logic and state management
+  </Card>
+  <Card title="Service Layer" icon="gear">
+    Reusable business logic components
+  </Card>
+  <Card title="Utility Layer" icon="wrench">
+    Utility classes and helpers
+  </Card>
+</CardGroup>
+
+## Component Layers
+
+### 1. Presentation Layer (Views)
+
+SwiftUI views for user interface:
+- `SerialScannerView`: Main scanning interface
+- `VisionKitLiveScannerView`: VisionKit integration
+- `ScanningGuidanceView`: User guidance
+- `CharacterConfidenceView`: Confidence visualization
+
+### 2. ViewModel Layer
+
+`SerialScannerViewModel` orchestrates:
+- Camera session management
+- OCR processing coordination
+- State management
+- Serial validation and stability tracking
+- UI state updates
+
+### 3. Service Layer
+
+Business logic services:
+- **Camera**: `CameraManager`, `CameraOptimizer`
+- **OCR**: `LiveSerialOCRProcessor`, `V2EnhancedOCRProcessor`
+- **Analytics**: `UnifiedMetricsService`, `TelemetryService`
+- **Validation**: `SerialValidator`, `StabilityTracker`
+
+### 4. Utility Layer
+
+Utility classes:
+- `SerialValidation`: Validation utilities
+- `FeatureGate`: Feature flag management
+- `RemoteConfigManager`: Configuration management
+- `PlatformDetector`: Platform detection
+
+## Data Flow
+
+### Frame Capture → OCR → Detection
+
+```
+CameraManager.startSession()
+  ↓
+AVCaptureSession captures frames (~30 FPS)
+  ↓
+CameraManager.captureOutput()
+  ↓
+SerialScannerViewModel.didCaptureFrame()
+  ↓
+LiveSerialOCRProcessor.processFrame()
+  ↓
+Vision OCR processing
+  ↓
+onTextDetected callback
+  ↓
+SerialScannerViewModel.didDetectText()
+  ↓
+handleDetectedSerial()
+  ↓
+Validation → Stability → UI Update
+```
+
+## Design Patterns
+
+### MVVM Pattern
+- **Model**: Data structures in `Models/`
+- **View**: SwiftUI views in `Views/`
+- **ViewModel**: `SerialScannerViewModel` orchestrates everything
+
+### Delegate Pattern
+- `CameraFrameDelegate`: Frame delivery from CameraManager
+- `DataScannerViewControllerDelegate`: VisionKit callbacks
+
+### Observer Pattern
+- `@Published` properties in ViewModel
+- SwiftUI automatic updates
+- Combine framework integration
+
+## Threading Model
+
+- **Main Thread**: UI updates, ViewModel state changes
+- **Background Threads**: Camera processing, OCR, image preprocessing, network requests
+- **Thread Safety**: `@MainActor` for ViewModel, DispatchQueue for background work

@@ -1,0 +1,70 @@
+---
+title: Configuration
+description: Configuration guide for AppleSerialScanner
+---
+
+# Configuration
+
+## RemoteConfig
+
+Configuration is managed via `RemoteConfigManager`.
+
+### Key Settings
+
+<ParamField path="minConfidenceScore" type="Float" default="0.65">
+  Minimum confidence threshold for serial detection.
+</ParamField>
+
+<ParamField path="requiredConsecutive" type="Int" default="2">
+  Number of consecutive frames required for stability.
+</ParamField>
+
+<ParamField path="roiCoordinates" type="CGRect">
+  Region of interest for OCR (normalized coordinates).
+</ParamField>
+
+<ParamField path="throttleInterval" type="TimeInterval" default="0.1">
+  Frame processing throttle interval in seconds.
+</ParamField>
+
+### Access
+
+```swift
+let config = RemoteConfigManager.shared.current
+let minConfidence = config?.minConfidenceScore ?? 0.65
+```
+
+## Feature Flags
+
+**Location**: `Utils/FeatureGate.swift`
+
+### Available Flags
+
+<CardGroup cols={2}>
+  <Card title="enhancedOCR" icon="sparkles">
+    Enable V2 OCR processor
+  </Card>
+  <Card title="smartROI" icon="target">
+    Enable smart ROI detection
+  </Card>
+  <Card title="preprocessing" icon="wand-magic">
+    Enable image preprocessing
+  </Card>
+  <Card title="analytics" icon="chart-line">
+    Enable analytics collection
+  </Card>
+</CardGroup>
+
+### Usage
+
+```swift
+if FeatureGate.isEnabled(.enhancedOCR) {
+    // Use enhanced OCR
+}
+```
+
+## App Configuration
+
+**Location**: `Utils/AppConfiguration.swift`
+
+App-level configuration and constants.

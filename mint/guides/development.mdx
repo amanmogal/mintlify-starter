@@ -1,0 +1,139 @@
+---
+title: Development Guide
+description: Guide for developers working on the codebase
+---
+
+# Development Guide
+
+## Getting Started
+
+### Prerequisites
+
+- Xcode 16.0+
+- iOS 17.0+ SDK
+- Swift 5.9+
+- macOS 14.0+ (for development)
+
+### Setup
+
+1. Clone the repository
+2. Open `AppleSerialScanner.xcodeproj` in Xcode
+3. Select your development team in Signing & Capabilities
+4. Build and run on simulator or device
+
+## Adding New Features
+
+### Adding a New OCR Processor
+
+1. **Create Processor Class**:
+```swift
+class MyOCRProcessor {
+    var onTextDetected: ((String, Float) -> Void)?
+    
+    func processFrame(_ pixelBuffer: CVPixelBuffer) {
+        // Process frame
+        // Call onTextDetected?(text, confidence)
+    }
+}
+```
+
+2. **Add to ViewModel**:
+```swift
+private let myOCRProcessor = MyOCRProcessor()
+
+override init() {
+    super.init()
+    myOCRProcessor.onTextDetected = { [weak self] text, confidence in
+        self?.didDetectText(text, confidence: confidence)
+    }
+}
+```
+
+3. **Process Frames**:
+```swift
+func didCaptureFrame(pixelBuffer: CVPixelBuffer, cameraMetadata: [String: Any]) {
+    myOCRProcessor.processFrame(pixelBuffer)
+}
+```
+
+### Adding a New View
+
+1. **Create SwiftUI View**:
+```swift
+struct MyNewView: View {
+    @ObservedObject var viewModel: SerialScannerViewModel
+    
+    var body: some View {
+        // View implementation
+    }
+}
+```
+
+2. **Add to Navigation**:
+```swift
+// In ScannerMainView.swift
+NavigationLink("My View") {
+    MyNewView(viewModel: viewModel)
+}
+```
+
+## Code Style
+
+### Naming Conventions
+
+- **Classes**: PascalCase (`SerialScannerViewModel`)
+- **Structs**: PascalCase (`AnalyticsData`)
+- **Functions**: camelCase (`didCaptureFrame`)
+- **Variables**: camelCase (`isScanning`)
+
+### File Organization
+
+- One main type per file
+- Extensions in separate files with `+` suffix
+- Related types grouped in same file
+
+## Testing
+
+### Unit Tests
+
+**Location**: `Tests/Unit/`
+
+Test individual components in isolation.
+
+**Example**:
+```swift
+#if canImport(XCTest)
+import XCTest
+@testable import AppleSerialScanner
+
+class MyServiceTests: XCTestCase {
+    func testMyMethod() {
+        let service = MyService()
+        let result = service.myMethod()
+        XCTAssertNotNil(result)
+    }
+}
+#endif
+```
+
+## Debugging
+
+### Logging
+
+**Logger Categories**:
+- `com.appleserialscanner.CameraManager`
+- `com.appleserialscanner.LiveOCR`
+- `com.appleserialscanner.ViewModel`
+
+**Usage**:
+```swift
+let logger = Logger(subsystem: "com.appleserialscanner", category: "MyComponent")
+logger.info("Message")
+logger.error("Error: \(error)")
+```
+
+### Key Log Points
+
+1. **Frame Capture**: `CameraManager.captureOutput`
+2. **OCR Processing**: `LiveSerialOCRProcessor.processFrame`
+3. **Detection**: `SerialScannerViewModel.didDetectText`

@@ -1,0 +1,65 @@
+---
+title: Testing
+description: Testing guide and best practices
+---
+
+# Testing
+
+## Test Structure
+
+Tests are organized in `AppleSerialScanner/Tests/`:
+
+### Unit Tests
+**Location**: `Tests/Unit/`
+
+Test individual components in isolation.
+
+**Example**:
+```swift
+#if canImport(XCTest)
+import XCTest
+@testable import AppleSerialScanner
+
+class MyServiceTests: XCTestCase {
+    func testMyMethod() {
+        let service = MyService()
+        let result = service.myMethod()
+        XCTAssertNotNil(result)
+    }
+}
+#endif
+```
+
+### Integration Tests
+**Location**: `Tests/Integration/`
+
+Test component interactions and workflows.
+
+### Performance Tests
+**Location**: `Tests/Performance/`
+
+Measure performance characteristics:
+- Memory usage
+- CPU usage
+- Network latency
+- Frame rate
+
+### UAT Tests
+**Location**: `Tests/UAT/`
+
+User acceptance tests and accessibility tests.
+
+## Running Tests
+
+```bash
+# Run all tests
+xcodebuild test -scheme AppleSerialScanner
+
+# Run specific test
+xcodebuild test -scheme AppleSerialScanner \
+  -only-testing:AppleSerialScannerTests/MyServiceTests
+```
+
+## Test Files
+
+All test files are wrapped with `#if canImport(XCTest)` to prevent compilation errors when included in the main app target.

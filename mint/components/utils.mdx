@@ -1,0 +1,55 @@
+---
+title: Utils
+description: Utility classes and helpers
+---
+
+# Utils
+
+## SerialValidation
+
+**File**: `Utils/SerialValidation.swift`
+
+Validation utilities.
+
+**Key Functions**:
+- `isValidSerialText(_:)`: Validate serial text
+- `isValidAppleSerialPattern(_:)`: Pattern validation
+
+## FeatureGate
+
+**File**: `Utils/FeatureGate.swift`
+
+Feature flag management.
+
+**Key Methods**:
+- `isEnabled(_:)`: Check if feature enabled
+- `setEnabled(_:value:)`: Set feature flag
+
+**Features**:
+- `.enhancedOCR`: Enable V2 OCR processor
+- `.smartROI`: Enable smart ROI detection
+- `.preprocessing`: Enable image preprocessing
+- `.analytics`: Enable analytics collection
+
+## RemoteConfigManager
+
+**File**: `Services/RemoteConfigManager.swift`
+
+Configuration management.
+
+**Key Properties**:
+- `minConfidenceScore`: 2.5 (default)
+- `enableAutoCapture`: true (default)
+- `autoCaptureDelay`: 1.5 seconds (default)
+- `defaultROI`: CGRect(x: 0.1, y: 0.2, width: 0.8, height: 0.5)
+
+## PlatformDetector
+
+**File**: `Utils/PlatformDetector.swift`
+
+Platform and device detection.
+
+**Key Methods**:
+- Device type detection
+- iOS version checking
+- Capability detection

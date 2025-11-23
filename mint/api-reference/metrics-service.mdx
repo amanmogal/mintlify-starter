@@ -1,0 +1,76 @@
+---
+title: UnifiedMetricsService
+description: API reference for metrics collection and backend integration
+---
+
+# UnifiedMetricsService
+
+**File**: `Services/UnifiedMetricsService.swift`
+
+Metrics collection and backend integration service.
+
+## Properties
+
+<ParamField path="shared" type="UnifiedMetricsService">
+  Shared singleton instance.
+</ParamField>
+
+## Methods
+
+### Logging
+
+<Method name="logScan" param="metrics: ScanMetrics" returns="async throws Void">
+  Log scan metrics to backend.
+</Method>
+
+<Method name="logDetection" param="metrics: DetectionMetrics" returns="async throws Void">
+  Log detection metrics to backend.
+</Method>
+
+<Method name="logPerformance" param="metrics: PerformanceMetrics" returns="async throws Void">
+  Log performance metrics to backend.
+</Method>
+
+<Method name="logError" param="error: Error, scanId: UUID?" returns="async throws Void">
+  Log error to backend.
+</Method>
+
+<Method name="logEvent" param="eventType: String, eventData: [String: Any]" returns="async throws Void">
+  Log custom event to backend.
+</Method>
+
+### Shadow Mode
+
+<Method name="submitShadowData" param="scanData: ShadowScanData" returns="async throws Void">
+  Submit shadow mode data for A/B testing.
+</Method>
+
+### Telemetry
+
+<Method name="submitDeviceTelemetry" param="telemetry: DeviceTelemetry" returns="async throws Void">
+  Submit device telemetry data.
+</Method>
+
+### Retrieval
+
+<Method name="getPerformanceMetrics" param="deviceModel: String, appVersion: String" returns="async throws PerformanceMetricsResponse">
+  Get performance metrics for device model.
+</Method>
+
+<Method name="getFailureSummary" returns="async throws FailureSummaryResponse">
+  Get failure analytics summary.
+</Method>
+
+<Method name="getPipelineStatus" returns="async throws PipelineStatusResponse">
+  Get pipeline status and health.
+</Method>
+
+## Endpoints
+
+- `POST /api/logs/ios`: Main telemetry endpoint
+- `POST /api/shadow/scan`: Shadow mode data
+- `POST /api/telemetry/submit`: Device telemetry
+- `GET /api/telemetry/performance`: Performance metrics
+- `GET /api/analytics/failure-summary`: Failure analytics
+- `GET /api/isolated/status`: Pipeline status
+- `GET /metrics`: Prometheus metrics

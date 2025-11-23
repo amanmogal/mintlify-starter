@@ -1,0 +1,70 @@
+---
+title: ViewModels
+description: ViewModel components and their responsibilities
+---
+
+# ViewModels
+
+## SerialScannerViewModel
+
+**File**: `ViewModels/SerialScannerViewModel.swift`
+
+Main orchestrator for scanning functionality.
+
+### Key Responsibilities
+
+- Camera session lifecycle management
+- OCR processing coordination
+- State management (scanning, processing, results)
+- Serial validation and stability tracking
+- UI state updates
+
+### Published Properties
+
+```swift
+@Published var isScanning: Bool
+@Published var isProcessing: Bool
+@Published var recognizedText: String
+@Published var guidanceText: String
+@Published var bestConfidence: Float
+@Published var lastConfirmedSerial: String?
+@Published var isFlashEnabled: Bool
+@Published var zoomFactor: CGFloat
+@Published var previewLayer: AVCaptureVideoPreviewLayer?
+```
+
+### Key Methods
+
+<Tabs>
+  <Tab title="Lifecycle">
+    ```swift
+    func startScanning()
+    func stopScanning()
+    func setOCREnabled(_ enabled: Bool)
+    ```
+  </Tab>
+  <Tab title="Camera Control">
+    ```swift
+    func toggleFlash()
+    func setZoomFactor(_ factor: CGFloat)
+    ```
+  </Tab>
+  <Tab title="Frame Processing">
+    ```swift
+    func didCaptureFrame(pixelBuffer: CVPixelBuffer, 
+                        cameraMetadata: [String: Any])
+    func didDetectText(_ text: String, confidence: Float)
+    func handleDetectedSerial(_ serial: String, 
+                              confidence: Float, 
+                              source: DetectionSource, 
+                              pixelBuffer: CVPixelBuffer?)
+    ```
+  </Tab>
+</Tabs>
+
+### Dependencies
+
+- `CameraManager`: Frame capture
+- `LiveSerialOCRProcessor`: OCR processing
+- `RemoteConfigManager`: Configuration
+- `UnifiedMetricsService`: Metrics collection

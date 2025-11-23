@@ -1,0 +1,84 @@
+---
+title: SerialScannerViewModel
+description: API reference for SerialScannerViewModel
+---
+
+# SerialScannerViewModel
+
+Main orchestrator for scanning functionality.
+
+## Properties
+
+### Published Properties
+
+<ParamField path="isScanning" type="Bool">
+  Scanning state. `true` when actively scanning.
+</ParamField>
+
+<ParamField path="isProcessing" type="Bool">
+  Processing state. `true` when processing frames.
+</ParamField>
+
+<ParamField path="recognizedText" type="String">
+  Currently recognized text from OCR.
+</ParamField>
+
+<ParamField path="guidanceText" type="String">
+  User guidance message displayed in UI.
+</ParamField>
+
+<ParamField path="bestConfidence" type="Float">
+  Best confidence score for current detection.
+</ParamField>
+
+<ParamField path="lastConfirmedSerial" type="String?">
+  Last confirmed serial number.
+</ParamField>
+
+<ParamField path="isFlashEnabled" type="Bool">
+  Camera flash enabled state.
+</ParamField>
+
+<ParamField path="zoomFactor" type="CGFloat">
+  Current camera zoom factor.
+</ParamField>
+
+## Methods
+
+### Lifecycle
+
+<Method name="startScanning" returns="Void">
+  Start camera and OCR processing.
+</Method>
+
+<Method name="stopScanning" returns="Void">
+  Stop all processing and camera session.
+</Method>
+
+<Method name="setOCREnabled" param="enabled: Bool" returns="Void">
+  Enable or disable OCR processing while keeping camera session alive.
+</Method>
+
+### Camera Control
+
+<Method name="toggleFlash" returns="Void">
+  Toggle camera flash on/off.
+</Method>
+
+<Method name="setZoomFactor" param="factor: CGFloat" returns="Void">
+  Set camera zoom factor.
+</Method>
+
+### Frame Processing
+
+<Method name="didCaptureFrame" param="pixelBuffer: CVPixelBuffer, cameraMetadata: [String: Any]" returns="Void">
+  Handle camera frame (CameraFrameDelegate). Called when a new frame is captured.
+</Method>
+
+<Method name="didDetectText" param="text: String, confidence: Float" returns="Void">
+  Handle OCR detection. Called when text is detected by OCR processor.
+</Method>
+
+<Method name="handleDetectedSerial" param="serial: String, confidence: Float, source: DetectionSource, pixelBuffer: CVPixelBuffer?" returns="Void">
+  Unified detection handler. Processes all detected serials from any source.
+</Method>

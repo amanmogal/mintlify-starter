@@ -1,0 +1,64 @@
+---
+title: Design Patterns
+description: Design patterns used in the codebase
+---
+
+# Design Patterns
+
+## MVVM Pattern
+
+**Model-View-ViewModel** architecture for separation of concerns.
+
+- **Model**: Data structures in `Models/`
+- **View**: SwiftUI views in `Views/`
+- **ViewModel**: `SerialScannerViewModel` orchestrates everything
+
+## Delegate Pattern
+
+Protocol-based communication for loose coupling.
+
+### CameraFrameDelegate
+
+```swift
+protocol CameraFrameDelegate: AnyObject {
+    @MainActor func didCaptureFrame(
+        pixelBuffer: CVPixelBuffer, 
+        cameraMetadata: [String: Any]
+    )
+}
+```
+
+### DataScannerViewControllerDelegate
+
+VisionKit delegate for text recognition callbacks.
+
+## Observer Pattern
+
+SwiftUI and Combine for reactive updates.
+
+- `@Published` properties in ViewModel
+- SwiftUI automatic view updates
+- Combine framework integration
+
+## Strategy Pattern
+
+Multiple OCR processors with selectable strategies.
+
+- `LiveSerialOCRProcessor`: Real-time processing
+- `V2EnhancedOCRProcessor`: Enhanced processing
+- `AdvancedOCRProcessor`: Accurate confirmation
+
+## Singleton Pattern
+
+Shared instances for services.
+
+- `UnifiedMetricsService.shared`
+- `RemoteConfigManager.shared`
+- `TelemetryService.shared`
+
+## Factory Pattern
+
+Service creation and initialization.
+
+- Configuration-based instantiation
+- Dependency injection via initializers
